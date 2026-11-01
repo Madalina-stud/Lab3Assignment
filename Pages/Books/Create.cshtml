@@ -1,3 +1,4 @@
+
 @page
 @model Moroti_Madalina_Lab2.Pages.Books.CreateModel
 
@@ -9,31 +10,64 @@
 
 <h4>Book</h4>
 <hr />
+
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
                 <label asp-for="Book.Title" class="control-label"></label>
                 <input asp-for="Book.Title" class="form-control" />
                 <span asp-validation-for="Book.Title" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Book.Author" class="control-label"></label>
                 <input asp-for="Book.Author" class="form-control" />
                 <span asp-validation-for="Book.Author" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Book.Price" class="control-label"></label>
                 <input asp-for="Book.Price" class="form-control" />
                 <span asp-validation-for="Book.Price" class="text-danger"></span>
-            </div> 
+            </div>
+
             <div class="form-group">
-                <label asp-for = "Book.PublishingDate" class="control-label"> </label>
+                <label asp-for="Book.PublishingDate" class="control-label"></label>
                 <input asp-for="Book.PublishingDate" class="form-control" />
                 <span asp-validation-for="Book.PublishingDate" class="text-danger"></span>
             </div>
-            <div class="form-group">
+
+            <div class="form-group mt-3">
+                <label class="control-label">Categories</label>
+
+                <div class="col-md-offset-1">
+                    <table>
+                        <tr>
+                            @{
+                                int cnt = 0;
+                                foreach (var category in Model.AssignedCategoryDataList)
+                                {
+                                    if (cnt++ % 3 == 0)
+                                    {
+                                        @:</tr><tr>
+                                    }
+                                    @:<td>
+                                        <input type="checkbox"
+                                               name="selectedCategories"
+                                               value="@category.CategoryID" />
+                                        @category.Name
+                                    @:</td>
+                                }
+                                @:</tr>
+                            }
+                    </table>
+                </div>
+            </div>
+
+            <div class="form-group mt-3">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
@@ -41,7 +75,7 @@
 </div>
 
 <div>
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="Index">Back to List</a>
 </div>
 
 @section Scripts {

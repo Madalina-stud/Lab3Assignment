@@ -9,6 +9,7 @@ namespace Moroti_Madalina_Lab2.Models
 
         [Display(Name = "Book Title")]
         public string Title { get; set; }
+
         public string Author { get; set; }
 
         [Column(TypeName = "decimal(6,2)")]
@@ -16,5 +17,7 @@ namespace Moroti_Madalina_Lab2.Models
 
         [DataType(DataType.Date)]
         public DateTime PublishingDate { get; set; }
+
+        public ICollection<BookCategory>? BookCategories { get; set; }
     }
 }

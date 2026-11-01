@@ -1,4 +1,4 @@
-using Microsoft.AspNetCore.Mvc;
+
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using Moroti_Madalina_Lab2.Models;
@@ -14,10 +14,16 @@ public class IndexModel : PageModel
         _context = context;
     }
 
-    public IList<Book> Book { get; set; } = default!;
+    public BookData BookData { get; set; } = default!;
 
     public async Task OnGetAsync()
     {
-        Book = await _context.Book.ToListAsync();
+        BookData = new BookData
+        {
+            Books = await _context.Book
+                .Include(b => b.BookCategories)
+                .ThenInclude(bc => bc.Category)
+                .ToListAsync()
+        };
     }
 }

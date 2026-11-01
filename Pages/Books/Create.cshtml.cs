@@ -1,11 +1,10 @@
+
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
 using Moroti_Madalina_Lab2.Models;
 
 namespace Moroti_Madalina_Lab2.Pages.Books;
 
-public class CreateModel : PageModel
+public class CreateModel : BookCategoriesPageModel
 {
     private readonly Moroti_Madalina_Lab2Context _context;
 
@@ -16,23 +15,42 @@ public class CreateModel : PageModel
 
     public IActionResult OnGet()
     {
+        Book = new Book();
+        Book.BookCategories = new List<BookCategory>();
+
+        PopulateAssignedCategoryData(_context, Book);
+
         return Page();
     }
 
     [BindProperty]
     public Book Book { get; set; } = default!;
 
-    // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD.
-    public async Task<IActionResult> OnPostAsync()
+    public async Task<IActionResult> OnPostAsync(string[] selectedCategories)
     {
-        if (!ModelState.IsValid)
+        var newBook = new Book();
+
+        if (await TryUpdateModelAsync<Book>(
+            newBook,
+            "Book",
+            b => b.Title,
+            b => b.Author,
+            b => b.Price,
+            b => b.PublishingDate))
         {
-            return Page();
+            _context.Book.Add(newBook);
+            await _context.SaveChangesAsync();
+
+            UpdateBookCategories(_context, selectedCategories, newBook);
+
+            await _context.SaveChangesAsync();
+
+            return RedirectToPage("./Index");
         }
 
-        _context.Book.Add(Book);
-        await _context.SaveChangesAsync();
+        PopulateAssignedCategoryData(_context, newBook);
 
-        return RedirectToPage("./Index");
+        return Page();
     }
 }
+

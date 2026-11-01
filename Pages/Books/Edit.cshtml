@@ -1,3 +1,4 @@
+
 @page
 @model Moroti_Madalina_Lab2.Pages.Books.EditModel
 
@@ -9,32 +10,66 @@
 
 <h4>Book</h4>
 <hr />
+
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <input type="hidden" asp-for="Book.ID" />
+
             <div class="form-group">
                 <label asp-for="Book.Title" class="control-label"></label>
                 <input asp-for="Book.Title" class="form-control" />
                 <span asp-validation-for="Book.Title" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Book.Author" class="control-label"></label>
                 <input asp-for="Book.Author" class="form-control" />
                 <span asp-validation-for="Book.Author" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Book.Price" class="control-label"></label>
                 <input asp-for="Book.Price" class="form-control" />
                 <span asp-validation-for="Book.Price" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <label asp-for="Book.PublishingDate" class="control-label"></label>
                 <input asp-for="Book.PublishingDate" class="form-control" />
                 <span asp-validation-for="Book.PublishingDate" class="text-danger"></span>
             </div>
+
             <div class="form-group">
+                <label class="control-label">Categories</label>
+                <div class="col-md-offset-1">
+                    <table>
+                        <tr>
+                            @{
+                                int cnt = 0;
+                                foreach (var category in Model.AssignedCategoryDataList)
+                                {
+                                    if (cnt++ % 3 == 0)
+                                    {
+                                        @:</tr><tr>
+                                    }
+                                    @:<td>
+                                        <input type="checkbox"
+                                               name="selectedCategories"
+                                               value="@category.CategoryID"
+                                               @(category.Assigned ? "checked=\"checked\"" : "") />
+                                        @category.Name
+                                    @:</td>
+                                }
+                                @:</tr>
+                            }
+                        </table>
+                    </div>
+                </div>
+
+            <div class="form-group mt-3">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -48,3 +83,4 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+

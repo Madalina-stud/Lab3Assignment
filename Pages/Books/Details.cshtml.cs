@@ -1,3 +1,4 @@
+
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -8,6 +9,7 @@ namespace Moroti_Madalina_Lab2.Pages.Books;
 public class DetailsModel : PageModel
 {
     private readonly Moroti_Madalina_Lab2Context _context;
+
     public DetailsModel(Moroti_Madalina_Lab2Context context)
     {
         _context = context;
@@ -17,20 +19,22 @@ public class DetailsModel : PageModel
 
     public async Task<IActionResult> OnGetAsync(int? id)
     {
-        if (id is null)
+        if (id == null)
         {
             return NotFound();
         }
 
-        var book = await _context.Book.FirstOrDefaultAsync(m => m.ID == id);
-        if (book is null)
+        var book = await _context.Book
+            .Include(b => b.BookCategories)
+            .ThenInclude(bc => bc.Category)
+            .FirstOrDefaultAsync(m => m.ID == id);
+
+        if (book == null)
         {
             return NotFound();
         }
-        else
-        {
-            Book = book;
-        }
+
+        Book = book;
 
         return Page();
     }
