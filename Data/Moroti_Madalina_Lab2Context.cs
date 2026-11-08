@@ -7,4 +7,6 @@ public class Moroti_Madalina_Lab2Context(DbContextOptions<Moroti_Madalina_Lab2Co
     public DbSet<Book> Book { get; set; } = default!;
     public DbSet<Category> Category { get; set; } = default!;
     public DbSet<BookCategory> BookCategory { get; set; } = default!;
+    public DbSet<Member> Member { get; set; } = default!;
+    public DbSet<Borrowing> Borrowing { get; set; } = default!;
 }

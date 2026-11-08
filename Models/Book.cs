@@ -19,5 +19,7 @@ namespace Moroti_Madalina_Lab2.Models
         public DateTime PublishingDate { get; set; }
 
         public ICollection<BookCategory>? BookCategories { get; set; }
+
+        public ICollection<Borrowing>? Borrowings { get; set; }
     }
 }
